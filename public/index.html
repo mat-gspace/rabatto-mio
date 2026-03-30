@@ -645,6 +645,18 @@
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
+  .deals-grid.fade-out { opacity: 0; transform: translateY(8px); }
+  .deals-grid.fade-in { opacity: 1; transform: translateY(0); transition: opacity 0.35s ease, transform 0.35s ease; }
+  .deals-match-label {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-bottom: 4px;
+  }
   .deal-card {
     background: var(--deal-bg);
     border-radius: 14px;
@@ -920,47 +932,8 @@
   <!-- EXAMPLE DEALS (bottom — social proof) -->
   <section class="deals-section anim-section">
     <h2 data-i18n="dealsTitle">Deals, die wir gefunden haben</h2>
-    <div class="deals-grid">
-      <a href="https://www.mediamarkt.de/de/content/themen-specials/aus-aktuellem-anlass/sony-ps-5-angebot-kurze-zeit" target="_blank" rel="noopener" class="deal-card deal-link">
-        <div class="deal-emoji">&#127918;</div>
-        <div class="deal-name">PlayStation 5 Slim</div>
-        <div class="deal-prices">
-          <span class="deal-old-price">549 &euro;</span>
-          <span class="deal-new-price">384 &euro;</span>
-        </div>
-        <span class="deal-badge" data-i18n="deal1badge">-30% bei MediaMarkt</span>
-        <span class="deal-link-hint" data-i18n="dealLink">Zum Deal &rarr;</span>
-      </a>
-      <a href="https://www.amazon.de/Apple-Kabellose-Ger%C3%A4uschunterdr%C3%BCckung-Personalisiertes-reduzieren/dp/B0CHWZ9TZS" target="_blank" rel="noopener" class="deal-card deal-link">
-        <div class="deal-emoji">&#127911;</div>
-        <div class="deal-name">AirPods Pro 2</div>
-        <div class="deal-prices">
-          <span class="deal-old-price">279 &euro;</span>
-          <span class="deal-new-price">162 &euro;</span>
-        </div>
-        <span class="deal-badge" data-i18n="deal2badge">-42% bei Amazon</span>
-        <span class="deal-link-hint" data-i18n="dealLink">Zum Deal &rarr;</span>
-      </a>
-      <a href="https://www.amazon.de/Dyson-V15-Detect-Absolute-Akkustaubsauger/dp/B0BS1Q7RG5" target="_blank" rel="noopener" class="deal-card deal-link">
-        <div class="deal-emoji">&#129529;</div>
-        <div class="deal-name">Dyson V15 Detect</div>
-        <div class="deal-prices">
-          <span class="deal-old-price">789 &euro;</span>
-          <span class="deal-new-price">569 &euro;</span>
-        </div>
-        <span class="deal-badge" data-i18n="deal3badge">-28% bei Amazon</span>
-        <span class="deal-link-hint" data-i18n="dealLink">Zum Deal &rarr;</span>
-      </a>
-      <a href="https://www.mediamarkt.de/de/product/_lg-oled65c43la-oled-tv-flat-65-zoll-165-cm-oled-4k-smart-tv-2948997.html" target="_blank" rel="noopener" class="deal-card deal-link">
-        <div class="deal-emoji">&#128250;</div>
-        <div class="deal-name">LG OLED C4 65"</div>
-        <div class="deal-prices">
-          <span class="deal-old-price">2.199 &euro;</span>
-          <span class="deal-new-price">1.244 &euro;</span>
-        </div>
-        <span class="deal-badge" data-i18n="deal4badge">-43% bei MediaMarkt</span>
-        <span class="deal-link-hint" data-i18n="dealLink">Zum Deal &rarr;</span>
-      </a>
+    <div class="deals-grid" id="deals-grid">
+      <!-- Deals are rendered dynamically by JS -->
     </div>
   </section>
 </main>
@@ -1010,6 +983,100 @@ document.querySelectorAll('.anim-section').forEach(el => observer.observe(el));
 
 
 // ═══════════════════════════════════════
+// 2b. DYNAMIC DEALS DATABASE
+// ═══════════════════════════════════════
+const dealsDB = [
+  // Gaming
+  { keywords: ['playstation','ps5','ps4','konsole','gaming','spiel','game','controller'], emoji: '&#127918;', name: 'PlayStation 5 Slim', oldPrice: '549', newPrice: '384', pct: 30, shop: 'MediaMarkt', url: 'https://www.mediamarkt.de/de/content/themen-specials/aus-aktuellem-anlass/sony-ps-5-angebot-kurze-zeit' },
+  { keywords: ['nintendo','switch','mario','zelda'], emoji: '&#127918;', name: 'Nintendo Switch 2', oldPrice: '459', newPrice: '419', pct: 9, shop: 'MediaMarkt', url: 'https://www.mediamarkt.de/de/product/_nintendo-switch-2-2989498.html' },
+  // Apple
+  { keywords: ['airpods','apple kopfhörer','apple headphone'], emoji: '&#127911;', name: 'AirPods Pro 2', oldPrice: '279', newPrice: '162', pct: 42, shop: 'Amazon', url: 'https://www.amazon.de/Apple-Kabellose-Ger%C3%A4uschunterdr%C3%BCckung-Personalisiertes-reduzieren/dp/B0CHWZ9TZS' },
+  { keywords: ['iphone','apple phone','apple handy'], emoji: '&#128241;', name: 'iPhone 16 128GB', oldPrice: '949', newPrice: '639', pct: 33, shop: 'Amazon', url: 'https://www.amazon.de/Apple-iPhone-128-Kamerasteuerung-Funktioniert/dp/B0DGHY5KG8' },
+  // Samsung
+  { keywords: ['samsung','galaxy'], emoji: '&#128241;', name: 'Samsung Galaxy S25', oldPrice: '959', newPrice: '659', pct: 31, shop: 'Amazon', url: 'https://www.amazon.de/Samsung-Smartphone-Speicher-50-MP-Kamera-Herstellergarantie/dp/B0DPN7PC3D' },
+  // Audio
+  { keywords: ['kopfhörer','headphone','audio','sony wh','noise cancel','anc'], emoji: '&#127911;', name: 'Sony WH-1000XM5', oldPrice: '379', newPrice: '179', pct: 53, shop: 'Amazon', url: 'https://www.amazon.de/Sony-WH-1000XM5-Cancelling-Headphones-Schnellladefunktion-Schwarz/dp/B09Y2MYL5C' },
+  // TV
+  { keywords: ['fernseher','tv','oled','lg','samsung tv','4k'], emoji: '&#128250;', name: 'LG OLED C4 65"', oldPrice: '2.199', newPrice: '1.244', pct: 43, shop: 'MediaMarkt', url: 'https://www.mediamarkt.de/de/product/_lg-oled65c43la-oled-tv-flat-65-zoll-165-cm-oled-4k-smart-tv-2948997.html' },
+  // Haushalt
+  { keywords: ['dyson','staubsauger','saugroboter','vacuum','haushalt','roborock'], emoji: '&#129529;', name: 'Dyson V15 Detect', oldPrice: '789', newPrice: '569', pct: 28, shop: 'Amazon', url: 'https://www.amazon.de/Dyson-V15-Detect-Absolute-Akkustaubsauger/dp/B0BS1Q7RG5' },
+  // Fitness
+  { keywords: ['laufschuh','nike','adidas','schuh','fitness','sport','sneaker','running'], emoji: '&#128095;', name: 'Adidas Ultraboost 5', oldPrice: '180', newPrice: '90', pct: 50, shop: 'Amazon', url: 'https://www.amazon.de/Running-Schuhe-adidas-Running/s?keywords=Running-Schuhe&rh=n%3A2838775031%2Cp_89%3Aadidas' },
+  // PC / Laptop
+  { keywords: ['laptop','notebook','pc','computer','macbook','thinkpad','lenovo'], emoji: '&#128187;', name: 'Lenovo ThinkPad E16', oldPrice: '899', newPrice: '649', pct: 28, shop: 'Amazon', url: 'https://www.amazon.de/stores/Lenovo/Angebote/page/1F3AAB48-5E9E-4471-A637-E7D400283AFA' },
+];
+
+const defaultDeals = [0, 2, 6, 5]; // PS5, AirPods, LG OLED, Sony WH
+const dealsGrid = document.getElementById('deals-grid');
+const linkText = () => currentLang === 'en' ? 'View deal &rarr;' : 'Zum Deal &rarr;';
+
+function renderDealCard(deal) {
+  return `<a href="${deal.url}" target="_blank" rel="noopener" class="deal-card deal-link">
+    <div class="deal-emoji">${deal.emoji}</div>
+    <div class="deal-name">${deal.name}</div>
+    <div class="deal-prices">
+      <span class="deal-old-price">${deal.oldPrice} &euro;</span>
+      <span class="deal-new-price">${deal.newPrice} &euro;</span>
+    </div>
+    <span class="deal-badge">-${deal.pct}% ${currentLang === 'en' ? 'at' : 'bei'} ${deal.shop}</span>
+    <span class="deal-link-hint">${linkText()}</span>
+  </a>`;
+}
+
+function findMatchingDeals(products) {
+  const matched = new Set();
+  products.forEach(product => {
+    const q = product.toLowerCase();
+    dealsDB.forEach((deal, idx) => {
+      if (deal.keywords.some(kw => q.includes(kw) || kw.includes(q.split(' ')[0]?.toLowerCase()))) {
+        matched.add(idx);
+      }
+    });
+  });
+  return [...matched];
+}
+
+function renderDeals(indices, matchLabel) {
+  dealsGrid.classList.add('fade-out');
+  dealsGrid.classList.remove('fade-in');
+  setTimeout(() => {
+    let html = '';
+    if (matchLabel) {
+      html += `<div class="deals-match-label">${matchLabel}</div>`;
+    }
+    // Show matched deals, fill up to 4 with defaults
+    const shown = new Set();
+    indices.forEach(i => { if (shown.size < 4) { html += renderDealCard(dealsDB[i]); shown.add(i); } });
+    if (shown.size < 4) {
+      defaultDeals.forEach(i => { if (shown.size < 4 && !shown.has(i)) { html += renderDealCard(dealsDB[i]); shown.add(i); } });
+    }
+    dealsGrid.innerHTML = html;
+    dealsGrid.classList.remove('fade-out');
+    dealsGrid.classList.add('fade-in');
+  }, 200);
+}
+
+function updateDealsForProducts() {
+  if (selectedProducts.length === 0) {
+    renderDeals(defaultDeals, null);
+    return;
+  }
+  const matches = findMatchingDeals(selectedProducts);
+  const label = currentLang === 'en'
+    ? `&#128161; Deals matching your selection`
+    : `&#128161; Passende Deals zu deiner Auswahl`;
+  if (matches.length > 0) {
+    renderDeals(matches, label);
+  } else {
+    renderDeals(defaultDeals, null);
+  }
+}
+
+// Initial render
+renderDeals(defaultDeals, null);
+
+
+// ═══════════════════════════════════════
 // 3. DARK / LIGHT THEME
 // ═══════════════════════════════════════
 const themeBtn = document.getElementById('theme-toggle');
@@ -1048,6 +1115,7 @@ function addProduct(name) {
   emailStep.classList.add('visible');
   addMoreHint.classList.add('visible');
   updateSubmitState();
+  updateDealsForProducts();
 }
 
 function removeProduct(name) {
@@ -1059,6 +1127,7 @@ function removeProduct(name) {
     addMoreHint.classList.remove('visible');
   }
   updateSubmitState();
+  updateDealsForProducts();
 }
 
 function renderSelectedProducts() {
@@ -1317,6 +1386,9 @@ function resetForm() {
   submitBtn.disabled = true;
   submitBtn.textContent = currentLang === 'en' ? 'Activate Deal Alert' : 'Deal-Alarm aktivieren';
 
+  // Reset deals to default
+  updateDealsForProducts();
+
   // Scroll to form and focus
   document.getElementById('signup-section').scrollIntoView({ behavior: 'smooth' });
   setTimeout(() => productInput.focus(), 400);
@@ -1349,8 +1421,6 @@ const translations = {
     step2: '<strong>E-Mail eintragen</strong> &mdash; Hinterlass deine E-Mail-Adresse, damit wir dich benachrichtigen k\u00f6nnen, sobald es ein Angebot gibt.',
     step3: '<strong>Besten Deal kassieren</strong> &mdash; Du bekommst eine E-Mail mit dem direkten Link zum g\u00fcnstigsten Angebot. Kaufe clever, spare Geld!',
     dealsTitle: 'Deals, die wir gefunden haben',
-    deal1badge: '-30% bei MediaMarkt', deal2badge: '-42% bei Amazon', deal3badge: '-28% bei Amazon', deal4badge: '-43% bei MediaMarkt',
-    dealLink: 'Zum Deal &rarr;',
     formTitle: 'Jetzt Deal-Alarm einrichten',
     formSubtitle: 'Kostenlos. Kein Spam. Nur dein Wunsch-Deal.',
     freeBadge: '100% Kostenlos',
@@ -1379,8 +1449,6 @@ const translations = {
     step2: '<strong>Enter your email</strong> &mdash; Leave your email address so we can notify you as soon as a deal becomes available.',
     step3: '<strong>Grab the best deal</strong> &mdash; You\'ll receive an email with a direct link to the cheapest offer. Shop smart, save money!',
     dealsTitle: 'Deals we\'ve found',
-    deal1badge: '-30% at MediaMarkt', deal2badge: '-42% at Amazon', deal3badge: '-28% at Amazon', deal4badge: '-43% at MediaMarkt',
-    dealLink: 'View deal &rarr;',
     formTitle: 'Set up your Deal Alert',
     formSubtitle: 'Free. No spam. Just your dream deal.',
     freeBadge: '100% Free',
@@ -1434,6 +1502,7 @@ function setLanguage(lang) {
 
 langToggle.addEventListener('click', () => {
   setLanguage(currentLang === 'de' ? 'en' : 'de');
+  updateDealsForProducts();
 });
 
 // Auto-detect browser language
