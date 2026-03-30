@@ -93,6 +93,32 @@
   }
   .theme-toggle:hover { transform: scale(1.1); }
 
+  /* ── LANG TOGGLE ── */
+  .lang-toggle {
+    position: fixed;
+    top: 16px;
+    right: 68px;
+    z-index: 1000;
+    height: 44px;
+    padding: 0 14px;
+    border-radius: 50px;
+    border: 2px solid var(--border);
+    background: var(--card-bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    transition: transform 0.2s, background 0.3s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+  }
+  .lang-toggle:hover { transform: scale(1.05); }
+  .lang-flag { font-size: 1.1rem; }
+
   /* ── AWNING ── */
   .awning-wrapper {
     width: 100%;
@@ -698,6 +724,12 @@
 </head>
 <body>
 
+<!-- LANG TOGGLE -->
+<button class="lang-toggle" id="lang-toggle" aria-label="Switch language">
+  <span class="lang-flag" id="lang-flag">&#127468;&#127463;</span>
+  <span id="lang-label">EN</span>
+</button>
+
 <!-- THEME TOGGLE -->
 <button class="theme-toggle" id="theme-toggle" aria-label="Dark/Light Mode umschalten">
   <span id="theme-icon">&#9790;</span>
@@ -720,14 +752,14 @@
   </div>
   <div class="logo-section">
     <div class="logo-text">RABATTOM<span class="percent">%</span>O</div>
-    <div class="logo-banner">Kaufe nur, was du wirklich brauchst. Und das zum besten Preis!</div>
+    <div class="logo-banner" data-i18n="banner">Kaufe nur, was du wirklich brauchst. Und das zum besten Preis!</div>
   </div>
 
   <!-- SOCIAL PROOF -->
   <div class="social-proof">
     <div class="social-proof-inner">
       <span class="social-proof-dot"></span>
-      <span>Bereits <strong class="social-proof-count" id="proof-count">0</strong> Deal-Alarme aktiv</span>
+      <span data-i18n="proofText">Bereits <strong class="social-proof-count" id="proof-count">0</strong> Deal-Alarme aktiv</span>
     </div>
   </div>
 </header>
@@ -736,26 +768,26 @@
 
   <!-- HOW IT WORKS -->
   <section class="how-it-works anim-section">
-    <h2>So funktioniert's</h2>
+    <h2 data-i18n="howTitle">So funktioniert's</h2>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
-        <div class="step-text"><strong>Produkt aussuchen</strong> &mdash; Tippe ein, was du kaufen willst. Unsere Live-Suche zeigt dir sofort passende Produkte aus dem gesamten Internet.</div>
+        <div class="step-text" data-i18n="step1"><strong>Produkt aussuchen</strong> &mdash; Tippe ein, was du kaufen willst. Unsere Live-Suche zeigt dir sofort passende Produkte aus dem gesamten Internet.</div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <div class="step-text"><strong>E-Mail eintragen</strong> &mdash; Hinterlass deine E-Mail-Adresse, damit wir dich benachrichtigen k&ouml;nnen, sobald es ein Angebot gibt.</div>
+        <div class="step-text" data-i18n="step2"><strong>E-Mail eintragen</strong> &mdash; Hinterlass deine E-Mail-Adresse, damit wir dich benachrichtigen k&ouml;nnen, sobald es ein Angebot gibt.</div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <div class="step-text"><strong>Besten Deal kassieren</strong> &mdash; Du bekommst eine E-Mail mit dem direkten Link zum g&uuml;nstigsten Angebot. Kaufe clever, spare Geld!</div>
+        <div class="step-text" data-i18n="step3"><strong>Besten Deal kassieren</strong> &mdash; Du bekommst eine E-Mail mit dem direkten Link zum g&uuml;nstigsten Angebot. Kaufe clever, spare Geld!</div>
       </div>
     </div>
   </section>
 
   <!-- EXAMPLE DEALS -->
   <section class="deals-section anim-section">
-    <h2>Deals, die wir gefunden haben</h2>
+    <h2 data-i18n="dealsTitle">Deals, die wir gefunden haben</h2>
     <div class="deals-grid">
       <div class="deal-card">
         <div class="deal-emoji">&#127918;</div>
@@ -764,7 +796,7 @@
           <span class="deal-old-price">549 &euro;</span>
           <span class="deal-new-price">429 &euro;</span>
         </div>
-        <span class="deal-badge">-22% gespart</span>
+        <span class="deal-badge" data-i18n="deal1badge">-22% gespart</span>
       </div>
       <div class="deal-card">
         <div class="deal-emoji">&#127911;</div>
@@ -773,7 +805,7 @@
           <span class="deal-old-price">279 &euro;</span>
           <span class="deal-new-price">199 &euro;</span>
         </div>
-        <span class="deal-badge">-29% gespart</span>
+        <span class="deal-badge" data-i18n="deal2badge">-29% gespart</span>
       </div>
       <div class="deal-card">
         <div class="deal-emoji">&#129529;</div>
@@ -782,7 +814,7 @@
           <span class="deal-old-price">699 &euro;</span>
           <span class="deal-new-price">519 &euro;</span>
         </div>
-        <span class="deal-badge">-26% gespart</span>
+        <span class="deal-badge" data-i18n="deal3badge">-26% gespart</span>
       </div>
       <div class="deal-card">
         <div class="deal-emoji">&#128250;</div>
@@ -791,15 +823,15 @@
           <span class="deal-old-price">2.199 &euro;</span>
           <span class="deal-new-price">1.599 &euro;</span>
         </div>
-        <span class="deal-badge">-27% gespart</span>
+        <span class="deal-badge" data-i18n="deal4badge">-27% gespart</span>
       </div>
     </div>
   </section>
 
   <!-- SIGNUP FORM -->
   <section class="signup-card anim-section" id="signup-section">
-    <h2>Jetzt Deal-Alarm einrichten</h2>
-    <p class="subtitle">Kostenlos. Kein Spam. Nur dein Wunsch-Deal.</p>
+    <h2 data-i18n="formTitle">Jetzt Deal-Alarm einrichten</h2>
+    <p class="subtitle" data-i18n="formSubtitle">Kostenlos. Kein Spam. Nur dein Wunsch-Deal.</p>
 
     <!-- CATEGORY CHIPS -->
     <div class="category-chips" id="category-chips">
@@ -818,23 +850,23 @@
     <form id="signup-form">
       <div class="form-group autocomplete-wrapper">
         <label for="product">
-          Welches Produkt suchst du?
+          <span data-i18n="productLabel">Welches Produkt suchst du?</span>
           <span class="live-badge"><span class="live-dot"></span> Live</span>
         </label>
-        <input type="text" id="product" placeholder="z.B. PlayStation 5, AirPods, Dyson..." autocomplete="off">
+        <input type="text" id="product" data-i18n-placeholder="productPlaceholder" placeholder="z.B. PlayStation 5, AirPods, Dyson..." autocomplete="off">
         <div class="autocomplete-list" id="autocomplete-list">
           <div class="loading-indicator" id="loading-indicator">
-            <span class="spinner"></span> Suche Produkte...
+            <span class="spinner"></span> <span data-i18n="searching">Suche Produkte...</span>
           </div>
         </div>
 
         <!-- SELECTED PRODUCTS CHIPS -->
         <div class="selected-products" id="selected-products"></div>
-        <div class="add-more-hint" id="add-more-hint">+ Tippe weiter, um weitere Produkte hinzuzuf&uuml;gen</div>
+        <div class="add-more-hint" id="add-more-hint" data-i18n="addMore">+ Tippe weiter, um weitere Produkte hinzuzuf&uuml;gen</div>
 
         <!-- TRENDING -->
         <div class="trending" id="trending-section">
-          <div class="trending-label">&#128293; Gerade beliebt</div>
+          <div class="trending-label" data-i18n="trending">&#128293; Gerade beliebt</div>
           <div class="trending-tags">
             <span class="trending-tag" data-product="PlayStation 5 Pro">PS5 Pro</span>
             <span class="trending-tag" data-product="Nintendo Switch 2">Switch 2</span>
@@ -849,20 +881,20 @@
       <!-- EMAIL (progressive - slides in after product selected) -->
       <div class="email-step" id="email-step">
         <div class="form-group">
-          <label for="email">Fast geschafft! Noch deine E-Mail:</label>
-          <input type="email" id="email" placeholder="name@beispiel.de" autocomplete="email">
+          <label for="email" data-i18n="emailLabel">Fast geschafft! Noch deine E-Mail:</label>
+          <input type="email" id="email" data-i18n-placeholder="emailPlaceholder" placeholder="name@beispiel.de" autocomplete="email">
         </div>
       </div>
 
-      <button type="submit" class="submit-btn" id="submit-btn" disabled>Deal-Alarm aktivieren</button>
+      <button type="submit" class="submit-btn" id="submit-btn" disabled data-i18n="submitBtn">Deal-Alarm aktivieren</button>
     </form>
 
     <div class="success-msg" id="success-msg">
       <div class="check-circle">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </div>
-      <h3>Du bist drin!</h3>
-      <p>Wir benachrichtigen dich per E-Mail, sobald es Deals gibt f&uuml;r:</p>
+      <h3 data-i18n="successTitle">Du bist drin!</h3>
+      <p data-i18n="successText">Wir benachrichtigen dich per E-Mail, sobald es Deals gibt f&uuml;r:</p>
       <div class="product-chips" id="success-products"></div>
     </div>
   </section>
@@ -870,14 +902,14 @@
 
 <!-- MOBILE STICKY CTA -->
 <div class="sticky-cta hidden" id="sticky-cta">
-  <button onclick="document.getElementById('signup-section').scrollIntoView({behavior:'smooth'})">
+  <button onclick="document.getElementById('signup-section').scrollIntoView({behavior:'smooth'})" data-i18n="stickyCta">
     Deal-Alarm einrichten
   </button>
 </div>
 
 <footer class="footer">
-  &copy; 2026 Rabatto Mio &mdash; Alle Rechte vorbehalten.<br>
-  <small>* Affiliate-Links: Wenn du &uuml;ber unsere Links kaufst, erhalten wir eine kleine Provision &mdash; f&uuml;r dich &auml;ndert sich am Preis nichts.</small>
+  <span data-i18n="footerCopy">&copy; 2026 Rabatto Mio &mdash; Alle Rechte vorbehalten.</span><br>
+  <small data-i18n="footerAffiliate">* Affiliate-Links: Wenn du &uuml;ber unsere Links kaufst, erhalten wir eine kleine Provision &mdash; f&uuml;r dich &auml;ndert sich am Preis nichts.</small>
 </footer>
 
 <script>
@@ -1213,6 +1245,106 @@ if (window.innerWidth <= 600) {
     stickyEl.classList.toggle('hidden', entry.isIntersecting);
   }, { threshold: 0.2 });
   stickyObserver.observe(signupSection);
+}
+
+
+// ═══════════════════════════════════════
+// 11. LANGUAGE TOGGLE (DE / EN)
+// ═══════════════════════════════════════
+const translations = {
+  de: {
+    banner: 'Kaufe nur, was du wirklich brauchst. Und das zum besten Preis!',
+    proofText: 'Bereits <strong class="social-proof-count" id="proof-count">' + TARGET_COUNT.toLocaleString('de-DE') + '</strong> Deal-Alarme aktiv',
+    howTitle: "So funktioniert's",
+    step1: '<strong>Produkt aussuchen</strong> &mdash; Tippe ein, was du kaufen willst. Unsere Live-Suche zeigt dir sofort passende Produkte aus dem gesamten Internet.',
+    step2: '<strong>E-Mail eintragen</strong> &mdash; Hinterlass deine E-Mail-Adresse, damit wir dich benachrichtigen k\u00f6nnen, sobald es ein Angebot gibt.',
+    step3: '<strong>Besten Deal kassieren</strong> &mdash; Du bekommst eine E-Mail mit dem direkten Link zum g\u00fcnstigsten Angebot. Kaufe clever, spare Geld!',
+    dealsTitle: 'Deals, die wir gefunden haben',
+    deal1badge: '-22% gespart', deal2badge: '-29% gespart', deal3badge: '-26% gespart', deal4badge: '-27% gespart',
+    formTitle: 'Jetzt Deal-Alarm einrichten',
+    formSubtitle: 'Kostenlos. Kein Spam. Nur dein Wunsch-Deal.',
+    productLabel: 'Welches Produkt suchst du?',
+    productPlaceholder: 'z.B. PlayStation 5, AirPods, Dyson...',
+    searching: 'Suche Produkte...',
+    addMore: '+ Tippe weiter, um weitere Produkte hinzuzuf\u00fcgen',
+    trending: '\uD83D\uDD25 Gerade beliebt',
+    emailLabel: 'Fast geschafft! Noch deine E-Mail:',
+    emailPlaceholder: 'name@beispiel.de',
+    submitBtn: 'Deal-Alarm aktivieren',
+    submitBtnLoading: 'Wird aktiviert...',
+    successTitle: 'Du bist drin!',
+    successText: 'Wir benachrichtigen dich per E-Mail, sobald es Deals gibt f\u00fcr:',
+    stickyCta: 'Deal-Alarm einrichten',
+    footerCopy: '&copy; 2026 Rabatto Mio &mdash; Alle Rechte vorbehalten.',
+    footerAffiliate: '* Affiliate-Links: Wenn du \u00fcber unsere Links kaufst, erhalten wir eine kleine Provision &mdash; f\u00fcr dich \u00e4ndert sich am Preis nichts.',
+  },
+  en: {
+    banner: 'Only buy what you really need. And at the best price!',
+    proofText: 'Already <strong class="social-proof-count" id="proof-count">' + TARGET_COUNT.toLocaleString('en-US') + '</strong> deal alerts active',
+    howTitle: 'How it works',
+    step1: '<strong>Choose a product</strong> &mdash; Type what you want to buy. Our live search instantly shows matching products from across the internet.',
+    step2: '<strong>Enter your email</strong> &mdash; Leave your email address so we can notify you as soon as a deal becomes available.',
+    step3: '<strong>Grab the best deal</strong> &mdash; You\'ll receive an email with a direct link to the cheapest offer. Shop smart, save money!',
+    dealsTitle: 'Deals we\'ve found',
+    deal1badge: '-22% saved', deal2badge: '-29% saved', deal3badge: '-26% saved', deal4badge: '-27% saved',
+    formTitle: 'Set up your Deal Alert',
+    formSubtitle: 'Free. No spam. Just your dream deal.',
+    productLabel: 'What product are you looking for?',
+    productPlaceholder: 'e.g. PlayStation 5, AirPods, Dyson...',
+    searching: 'Searching products...',
+    addMore: '+ Keep typing to add more products',
+    trending: '\uD83D\uDD25 Trending now',
+    emailLabel: 'Almost there! Your email:',
+    emailPlaceholder: 'name@example.com',
+    submitBtn: 'Activate Deal Alert',
+    submitBtnLoading: 'Activating...',
+    successTitle: "You're in!",
+    successText: "We'll notify you by email as soon as there are deals for:",
+    stickyCta: 'Set up Deal Alert',
+    footerCopy: '&copy; 2026 Rabatto Mio &mdash; All rights reserved.',
+    footerAffiliate: '* Affiliate links: If you buy through our links, we receive a small commission &mdash; the price stays the same for you.',
+  }
+};
+
+let currentLang = 'de';
+const langToggle = document.getElementById('lang-toggle');
+const langFlag = document.getElementById('lang-flag');
+const langLabel = document.getElementById('lang-label');
+
+function setLanguage(lang) {
+  currentLang = lang;
+  const t = translations[lang];
+  document.documentElement.setAttribute('lang', lang);
+
+  // Update all data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.innerHTML = t[key];
+  });
+
+  // Update placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key]) el.placeholder = t[key];
+  });
+
+  // Update toggle button to show the OTHER language
+  if (lang === 'de') {
+    langFlag.innerHTML = '&#127468;&#127463;';
+    langLabel.textContent = 'EN';
+  } else {
+    langFlag.innerHTML = '&#127465;&#127466;';
+    langLabel.textContent = 'DE';
+  }
+}
+
+langToggle.addEventListener('click', () => {
+  setLanguage(currentLang === 'de' ? 'en' : 'de');
+});
+
+// Auto-detect browser language
+if (navigator.language && !navigator.language.startsWith('de')) {
+  setLanguage('en');
 }
 </script>
 

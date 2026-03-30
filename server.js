@@ -93,44 +93,74 @@ app.get('/api/search', (req, res) => {
 });
 
 // ─────────────────────────────────────────────
+// GOOGLE SHEETS INTEGRATION
+// ─────────────────────────────────────────────
+const GOOGLE_SHEETS_URL = process.env.GOOGLE_SHEETS_URL
+  || 'https://script.google.com/macros/s/AKfycbxUvFRGamoLOeowdWM5NJWK6O1S8oPIwHSvjLEF6OtK6Jz_76dgH3RVPiK6pqoxfGJ0/exec';
+
+function saveToGoogleSheets(email, product) {
+  const payload = JSON.stringify({ email, product });
+
+  const url = new URL(GOOGLE_SHEETS_URL);
+  const options = {
+    hostname: url.hostname,
+    path: url.pathname,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(payload)
+    }
+  };
+
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, (res) => {
+      let data = '';
+      // Follow redirects (Google Apps Script redirects on POST)
+      if (res.statusCode === 302 || res.statusCode === 301) {
+        const redirectUrl = res.headers.location;
+        https.get(redirectUrl, (redirectRes) => {
+          let rData = '';
+          redirectRes.on('data', chunk => rData += chunk);
+          redirectRes.on('end', () => resolve(rData));
+        }).on('error', reject);
+        return;
+      }
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+    });
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
+// ─────────────────────────────────────────────
 // SUBSCRIBER REGISTRATION
 // ─────────────────────────────────────────────
-// Stores email + product wish. In production, connect
-// this to a database (e.g. SQLite, PostgreSQL, or a
-// service like Mailchimp/ConvertKit).
-const subscribers = [];
-
-app.post('/api/subscribe', (req, res) => {
+app.post('/api/subscribe', async (req, res) => {
   const { email, product } = req.body;
 
   if (!email || !product) {
     return res.status(400).json({ error: 'E-Mail und Produkt sind erforderlich.' });
   }
 
-  // Simple email validation
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: 'Bitte gib eine gueltige E-Mail-Adresse ein.' });
   }
 
-  const subscriber = {
-    email,
-    product,
-    createdAt: new Date().toISOString(),
-    id: subscribers.length + 1
-  };
-
-  subscribers.push(subscriber);
-  console.log(`Neuer Subscriber: ${email} moechte ${product}`);
+  // Save to Google Sheets
+  try {
+    await saveToGoogleSheets(email, product);
+    console.log(`Neuer Subscriber (Google Sheets): ${email} moechte ${product}`);
+  } catch (err) {
+    console.error('Google Sheets Fehler:', err.message);
+    // Still respond with success - don't block the user
+  }
 
   res.json({
     success: true,
     message: `Deal-Alarm fuer "${product}" ist aktiv!`
   });
-});
-
-// Admin: view all subscribers (protect this in production!)
-app.get('/api/subscribers', (req, res) => {
-  res.json({ count: subscribers.length, subscribers });
 });
 
 // Serve the main page
