@@ -872,6 +872,7 @@
       <h3 data-i18n="successTitle">Du bist drin!</h3>
       <p data-i18n="successText">Wir benachrichtigen dich per E-Mail, sobald es Deals gibt f&uuml;r:</p>
       <div class="product-chips" id="success-products"></div>
+      <button class="submit-btn" style="margin-top:18px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));box-shadow:0 4px 18px rgba(58,143,191,0.3);animation:none" id="new-deal-btn" data-i18n="newDealBtn" onclick="resetForm()">Weiteren Deal-Alarm einrichten</button>
     </div>
   </section>
 
@@ -1095,7 +1096,7 @@ async function fetchSuggestions(query) {
   if (abortController) abortController.abort();
   abortController = new AbortController();
   try {
-    const res = await fetch(`/api/suggestions?q=${encodeURIComponent(query)}`, { signal: abortController.signal });
+    const res = await fetch(`/api/suggestions?q=${encodeURIComponent(query)}&lang=${currentLang}`, { signal: abortController.signal });
     const data = await res.json();
     return data.suggestions || [];
   } catch (e) {
@@ -1270,6 +1271,33 @@ document.getElementById('signup-form').addEventListener('submit', async function
 
 
 // ═══════════════════════════════════════
+// 9b. RESET FORM (for adding another deal)
+// ═══════════════════════════════════════
+function resetForm() {
+  // Clear state
+  selectedProducts.length = 0;
+  renderSelectedProducts();
+  document.getElementById('email').value = '';
+  productInput.value = '';
+
+  // Hide success, show form
+  document.getElementById('success-msg').classList.remove('active');
+  document.getElementById('signup-form').style.display = '';
+  document.querySelector('.trust-line').style.display = '';
+  emailStep.classList.remove('visible');
+  addMoreHint.classList.remove('visible');
+
+  // Reset button
+  submitBtn.disabled = true;
+  submitBtn.textContent = currentLang === 'en' ? 'Activate Deal Alert' : 'Deal-Alarm aktivieren';
+
+  // Scroll to form and focus
+  document.getElementById('signup-section').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => productInput.focus(), 400);
+}
+
+
+// ═══════════════════════════════════════
 // 10. MOBILE STICKY CTA
 // ═══════════════════════════════════════
 if (window.innerWidth <= 600) {
@@ -1311,6 +1339,7 @@ const translations = {
     trustSpeed: 'Sofortige Benachrichtigung',
     successTitle: 'Du bist drin!',
     successText: 'Wir benachrichtigen dich per E-Mail, sobald es Deals gibt f\u00fcr:',
+    newDealBtn: 'Weiteren Deal-Alarm einrichten',
     stickyCta: 'Deal-Alarm einrichten',
     footerCopy: '&copy; 2026 Rabatto Mio &mdash; Alle Rechte vorbehalten.',
     footerAffiliate: '* Affiliate-Links: Wenn du \u00fcber unsere Links kaufst, erhalten wir eine kleine Provision &mdash; f\u00fcr dich \u00e4ndert sich am Preis nichts.',
@@ -1339,6 +1368,7 @@ const translations = {
     trustSpeed: 'Instant notifications',
     successTitle: "You're in!",
     successText: "We'll notify you by email as soon as there are deals for:",
+    newDealBtn: 'Set up another Deal Alert',
     stickyCta: 'Set up Deal Alert',
     footerCopy: '&copy; 2026 Rabatto Mio &mdash; All rights reserved.',
     footerAffiliate: '* Affiliate links: If you buy through our links, we receive a small commission &mdash; the price stays the same for you.',

@@ -17,19 +17,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 // These are the same suggestions shown in Amazon's own search bar
 app.get('/api/suggestions', (req, res) => {
   const query = req.query.q;
+  const lang = req.query.lang || 'de';
   if (!query || query.length < 2) {
     return res.json({ suggestions: [] });
   }
 
-  const url = `https://completion.amazon.de/api/2017/suggestions`
-    + `?mid=A1PA6795UKMFR9`   // Amazon.de marketplace ID
-    + `&alias=aps`              // "all product search"
+  // Switch between Amazon.de (German) and Amazon.com (English)
+  const isEn = lang === 'en';
+  const domain = isEn ? 'completion.amazon.com' : 'completion.amazon.de';
+  const mid = isEn ? 'ATVPDKIKX0DER' : 'A1PA6795UKMFR9';
+  const lop = isEn ? 'en_US' : 'de_DE';
+  const acceptLang = isEn ? 'en-US,en;q=0.9' : 'de-DE,de;q=0.9';
+
+  const url = `https://${domain}/api/2017/suggestions`
+    + `?mid=${mid}`
+    + `&alias=aps`
     + `&prefix=${encodeURIComponent(query)}`
     + `&event=onKeyPress`
     + `&limit=12`
     + `&suggestion-type=KEYWORD`
     + `&page-type=Gateway`
-    + `&lop=de_DE`
+    + `&lop=${lop}`
     + `&site-variant=desktop`
     + `&client-info=amazon-search-ui`
     + `&fb=1`
@@ -39,7 +47,7 @@ app.get('/api/suggestions', (req, res) => {
     headers: {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       'Accept': 'application/json',
-      'Accept-Language': 'de-DE,de;q=0.9'
+      'Accept-Language': acceptLang
     }
   }, (apiRes) => {
     let data = '';
