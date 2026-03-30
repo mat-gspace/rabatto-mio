@@ -148,15 +148,12 @@ app.post('/api/subscribe', async (req, res) => {
     return res.status(400).json({ error: 'Bitte gib eine gueltige E-Mail-Adresse ein.' });
   }
 
-  // Save to Google Sheets
-  try {
-    await saveToGoogleSheets(email, product);
-    console.log(`Neuer Subscriber (Google Sheets): ${email} moechte ${product}`);
-  } catch (err) {
-    console.error('Google Sheets Fehler:', err.message);
-    // Still respond with success - don't block the user
-  }
+  // Save to Google Sheets (fire-and-forget — don't block the user)
+  saveToGoogleSheets(email, product)
+    .then(() => console.log(`Neuer Subscriber (Google Sheets): ${email} moechte ${product}`))
+    .catch(err => console.error('Google Sheets Fehler:', err.message));
 
+  // Respond immediately
   res.json({
     success: true,
     message: `Deal-Alarm fuer "${product}" ist aktiv!`
