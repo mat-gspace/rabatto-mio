@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rabatto Mio - Kaufe nur, was du wirklich brauchst. Und das zum besten Preis!</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #7EECD8;
+    --card-bg: rgba(255,255,255,0.92);
+    --card-bg-solid: rgba(255,255,255,0.95);
+    --text: #2d2d2d;
+    --text-secondary: #555;
+    --text-muted: #888;
+    --border: #e0e0e0;
+    --input-bg: #fafafa;
+    --purple: #6b21a8;
+    --purple-dark: #4a0e8f;
+    --gold: #FFD700;
+    --gold-dark: #b8860b;
+    --green: #059669;
+    --red: #e8192c;
+    --footer-text: rgba(0,0,0,0.35);
+    --dropdown-bg: #fff;
+    --chip-bg: rgba(255,255,255,0.7);
+    --chip-bg-active: #6b21a8;
+    --chip-text: #555;
+    --chip-text-active: #fff;
+    --deal-bg: #fff;
+    --deal-badge-bg: #dcfce7;
+    --deal-badge-text: #16a34a;
+    --deal-old-price: #999;
+  }
+
+  [data-theme="dark"] {
+    --bg: #0f1a17;
+    --card-bg: rgba(30,40,38,0.95);
+    --card-bg-solid: rgba(30,40,38,0.98);
+    --text: #e8e8e8;
+    --text-secondary: #aaa;
+    --text-muted: #777;
+    --border: #3a3a3a;
+    --input-bg: #1e2826;
+    --purple: #a855f7;
+    --purple-dark: #7c3aed;
+    --gold: #FFD700;
+    --gold-dark: #b8860b;
+    --green: #34d399;
+    --footer-text: rgba(255,255,255,0.3);
+    --dropdown-bg: #1e2826;
+    --chip-bg: rgba(255,255,255,0.08);
+    --chip-bg-active: #a855f7;
+    --chip-text: #ccc;
+    --chip-text-active: #fff;
+    --deal-bg: rgba(255,255,255,0.05);
+    --deal-badge-bg: rgba(16,185,129,0.15);
+    --deal-badge-text: #34d399;
+    --deal-old-price: #666;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    color: var(--text);
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* ── THEME TOGGLE ── */
+  .theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--card-bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: transform 0.2s, background 0.3s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+  }
+  .theme-toggle:hover { transform: scale(1.1); }
+
+  /* ── AWNING ── */
+  .awning-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 0;
+  }
+  .awning {
+    width: 420px;
+    height: 160px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0 0 50% 50% / 0 0 40% 40%;
+  }
+  .awning-stripes { display: flex; height: 100%; width: 100%; }
+  .awning-stripes div { flex: 1; height: 100%; }
+  .awning-stripes div:nth-child(odd) { background: var(--red); }
+  .awning-stripes div:nth-child(even) { background: #fff; }
+  .awning-shadow {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40px;
+    background: linear-gradient(to top, rgba(0,0,0,0.15), transparent);
+  }
+
+  /* ── LOGO ── */
+  .logo-section {
+    text-align: center;
+    margin-top: -10px;
+    position: relative;
+    z-index: 2;
+  }
+  .logo-text {
+    font-family: 'Fredoka One', cursive;
+    font-size: 4rem;
+    color: var(--gold);
+    text-shadow: 3px 3px 0 var(--gold-dark), -1px -1px 0 var(--gold-dark),
+      1px -1px 0 var(--gold-dark), -1px 1px 0 var(--gold-dark), 0 4px 6px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+  .logo-text .percent { font-size: 3.2rem; }
+  .logo-banner {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 8px 30px;
+    margin-top: 6px;
+    clip-path: polygon(0 0, 100% 0, 96% 100%, 4% 100%);
+    text-transform: uppercase;
+  }
+
+  /* ── SOCIAL PROOF ── */
+  .social-proof {
+    text-align: center;
+    margin-top: 20px;
+    animation: fadeSlideUp 0.6s ease 0.2s both;
+  }
+  .social-proof-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    padding: 10px 22px;
+    border-radius: 50px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+  }
+  .social-proof-count {
+    font-weight: 800;
+    color: var(--purple);
+    font-size: 1.05rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .social-proof-dot {
+    width: 8px; height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  /* ── CONTAINER ── */
+  .container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 20px 100px;
+  }
+
+  /* ── SECTION ANIMATIONS ── */
+  .anim-section {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .anim-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how-it-works {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 32px 28px;
+    margin-top: 28px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .how-it-works h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: var(--purple);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .steps { display: flex; flex-direction: column; gap: 16px; }
+  .step { display: flex; align-items: flex-start; gap: 14px; }
+  .step-num {
+    flex-shrink: 0;
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    box-shadow: 0 3px 8px rgba(255,165,0,0.3);
+  }
+  .step-text {
+    padding-top: 8px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+  .step-text strong { color: var(--text); }
+
+  /* ── EXAMPLE DEALS ── */
+  .deals-section {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 32px 28px;
+    margin-top: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .deals-section h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: var(--purple);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .deals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .deal-card {
+    background: var(--deal-bg);
+    border-radius: 14px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .deal-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+  .deal-emoji { font-size: 2rem; margin-bottom: 8px; }
+  .deal-name {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .deal-prices {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .deal-old-price {
+    text-decoration: line-through;
+    color: var(--deal-old-price);
+    font-size: 0.82rem;
+  }
+  .deal-new-price {
+    font-weight: 800;
+    color: var(--green);
+    font-size: 1rem;
+  }
+  .deal-badge {
+    display: inline-block;
+    background: var(--deal-badge-bg);
+    color: var(--deal-badge-text);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  /* ── FORM CARD ── */
+  .signup-card {
+    background: var(--card-bg-solid);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 36px 28px;
+    margin-top: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .signup-card h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: var(--purple);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .signup-card .subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+
+  /* ── CATEGORY CHIPS ── */
+  .category-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .cat-chip {
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: var(--chip-bg);
+    color: var(--chip-text);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    backdrop-filter: blur(4px);
+  }
+  .cat-chip:hover {
+    background: var(--chip-bg-active);
+    color: var(--chip-text-active);
+    border-color: var(--chip-bg-active);
+  }
+
+  /* ── FORM ── */
+  .form-group {
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .form-group label {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: var(--input-bg);
+    color: var(--text);
+  }
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(107,33,168,0.12);
+    background: var(--dropdown-bg);
+  }
+  .form-group input::placeholder { color: var(--text-muted); }
+
+  /* ── SELECTED PRODUCTS (Multi) ── */
+  .selected-products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .selected-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 5px 10px 5px 12px;
+    border-radius: 50px;
+    animation: popIn 0.25s ease;
+  }
+  .selected-tag .remove-tag {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    line-height: 1;
+  }
+  .selected-tag .remove-tag:hover { background: rgba(255,255,255,0.35); }
+  .add-more-hint {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+    display: none;
+  }
+  .add-more-hint.visible { display: block; }
+
+  /* ── TRENDING TAGS ── */
+  .trending {
+    margin-top: 10px;
+  }
+  .trending-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .trending-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .trending-tag {
+    font-size: 0.78rem;
+    padding: 4px 12px;
+    border-radius: 50px;
+    background: var(--chip-bg);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .trending-tag:hover {
+    background: var(--purple);
+    color: #fff;
+    border-color: var(--purple);
+  }
+
+  /* ── EMAIL STEP (progressive) ── */
+  .email-step {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+    margin-top: 0;
+  }
+  .email-step.visible {
+    max-height: 120px;
+    opacity: 1;
+    margin-top: 18px;
+  }
+
+  /* ── AUTOCOMPLETE ── */
+  .autocomplete-wrapper { position: relative; }
+  .autocomplete-list {
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: var(--dropdown-bg);
+    border: 2px solid var(--purple);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    max-height: 320px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  }
+  .autocomplete-list.active { display: block; }
+  .autocomplete-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 0.92rem;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+  }
+  .autocomplete-item:last-child { border-bottom: none; }
+  .autocomplete-item:hover, .autocomplete-item.selected { background: rgba(107,33,168,0.08); }
+  .autocomplete-item .search-icon {
+    flex-shrink: 0; width: 18px; height: 18px; opacity: 0.4;
+  }
+  .autocomplete-item .product-name { flex: 1; }
+  .autocomplete-item .product-name .highlight { font-weight: 700; color: var(--purple); }
+
+  /* ── LOADING ── */
+  .loading-indicator {
+    display: none;
+    padding: 16px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+  .loading-indicator.active { display: block; }
+  .spinner {
+    display: inline-block;
+    width: 16px; height: 16px;
+    border: 2px solid var(--border);
+    border-top-color: var(--purple);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── LIVE BADGE ── */
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(5,150,105,0.1);
+    color: var(--green);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .live-dot {
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ── SUBMIT BUTTON ── */
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 16px rgba(107,33,168,0.3);
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+    animation: subtlePulse 2.5s ease-in-out infinite;
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(107,33,168,0.4);
+    animation: none;
+  }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; animation: none; }
+  @keyframes subtlePulse {
+    0%,100% { box-shadow: 0 4px 16px rgba(107,33,168,0.3); }
+    50% { box-shadow: 0 4px 24px rgba(107,33,168,0.5); }
+  }
+
+  /* ── SUCCESS + CONFETTI ── */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 28px;
+    animation: fadeSlideUp 0.4s ease;
+  }
+  .success-msg.active { display: block; }
+  .success-msg .check-circle {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, #10b981, var(--green));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    box-shadow: 0 4px 16px rgba(16,185,129,0.3);
+    animation: scaleIn 0.4s ease;
+  }
+  .success-msg .check-circle svg { width: 36px; height: 36px; stroke: #fff; stroke-width: 3; fill: none; }
+  .success-msg h3 { font-family: 'Fredoka One', cursive; color: var(--purple); font-size: 1.3rem; margin-bottom: 8px; }
+  .success-msg p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
+  .success-msg .product-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px; }
+  .success-msg .product-chip {
+    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+    color: #fff; font-size: 0.82rem; font-weight: 600; padding: 5px 14px; border-radius: 50px;
+  }
+
+  /* ── CONFETTI CANVAS ── */
+  #confetti-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── ERROR ── */
+  .error-msg {
+    background: #fef2f2; color: #dc2626;
+    padding: 10px 14px; border-radius: 8px;
+    font-size: 0.85rem; margin-bottom: 16px; display: none;
+  }
+  .error-msg.active { display: block; }
+
+  /* ── MOBILE STICKY CTA ── */
+  .sticky-cta {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px 20px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    background: var(--card-bg-solid);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    z-index: 900;
+    transition: transform 0.3s ease;
+  }
+  .sticky-cta.hidden { transform: translateY(100%); }
+  .sticky-cta button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--footer-text);
+    font-size: 0.8rem;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scaleIn {
+    from { transform: scale(0); } to { transform: scale(1); }
+  }
+  @keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .awning { width: 300px; height: 120px; }
+    .logo-text { font-size: 2.6rem; }
+    .logo-text .percent { font-size: 2.2rem; }
+    .logo-banner { font-size: 0.6rem; padding: 6px 18px; }
+    .how-it-works, .signup-card, .deals-section { padding: 24px 20px; }
+    .deals-grid { grid-template-columns: 1fr; }
+    .sticky-cta { display: block; }
+    .container { padding-bottom: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" id="theme-toggle" aria-label="Dark/Light Mode umschalten">
+  <span id="theme-icon">&#9790;</span>
+</button>
+
+<!-- CONFETTI CANVAS -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- HEADER -->
+<header>
+  <div class="awning-wrapper">
+    <div class="awning">
+      <div class="awning-stripes">
+        <div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div>
+      </div>
+      <div class="awning-shadow"></div>
+    </div>
+  </div>
+  <div class="logo-section">
+    <div class="logo-text">RABATTOM<span class="percent">%</span>O</div>
+    <div class="logo-banner">Kaufe nur, was du wirklich brauchst. Und das zum besten Preis!</div>
+  </div>
+
+  <!-- SOCIAL PROOF -->
+  <div class="social-proof">
+    <div class="social-proof-inner">
+      <span class="social-proof-dot"></span>
+      <span>Bereits <strong class="social-proof-count" id="proof-count">0</strong> Deal-Alarme aktiv</span>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works anim-section">
+    <h2>So funktioniert's</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Produkt aussuchen</strong> &mdash; Tippe ein, was du kaufen willst. Unsere Live-Suche zeigt dir sofort passende Produkte aus dem gesamten Internet.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>E-Mail eintragen</strong> &mdash; Hinterlass deine E-Mail-Adresse, damit wir dich benachrichtigen k&ouml;nnen, sobald es ein Angebot gibt.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Besten Deal kassieren</strong> &mdash; Du bekommst eine E-Mail mit dem direkten Link zum g&uuml;nstigsten Angebot. Kaufe clever, spare Geld!</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXAMPLE DEALS -->
+  <section class="deals-section anim-section">
+    <h2>Deals, die wir gefunden haben</h2>
+    <div class="deals-grid">
+      <div class="deal-card">
+        <div class="deal-emoji">&#127918;</div>
+        <div class="deal-name">PlayStation 5 Slim</div>
+        <div class="deal-prices">
+          <span class="deal-old-price">549 &euro;</span>
+          <span class="deal-new-price">429 &euro;</span>
+        </div>
+        <span class="deal-badge">-22% gespart</span>
+      </div>
+      <div class="deal-card">
+        <div class="deal-emoji">&#127911;</div>
+        <div class="deal-name">AirPods Pro 2</div>
+        <div class="deal-prices">
+          <span class="deal-old-price">279 &euro;</span>
+          <span class="deal-new-price">199 &euro;</span>
+        </div>
+        <span class="deal-badge">-29% gespart</span>
+      </div>
+      <div class="deal-card">
+        <div class="deal-emoji">&#129529;</div>
+        <div class="deal-name">Dyson V15 Detect</div>
+        <div class="deal-prices">
+          <span class="deal-old-price">699 &euro;</span>
+          <span class="deal-new-price">519 &euro;</span>
+        </div>
+        <span class="deal-badge">-26% gespart</span>
+      </div>
+      <div class="deal-card">
+        <div class="deal-emoji">&#128250;</div>
+        <div class="deal-name">LG OLED C4 65"</div>
+        <div class="deal-prices">
+          <span class="deal-old-price">2.199 &euro;</span>
+          <span class="deal-new-price">1.599 &euro;</span>
+        </div>
+        <span class="deal-badge">-27% gespart</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNUP FORM -->
+  <section class="signup-card anim-section" id="signup-section">
+    <h2>Jetzt Deal-Alarm einrichten</h2>
+    <p class="subtitle">Kostenlos. Kein Spam. Nur dein Wunsch-Deal.</p>
+
+    <!-- CATEGORY CHIPS -->
+    <div class="category-chips" id="category-chips">
+      <span class="cat-chip" data-q="playstation">&#127918; Gaming</span>
+      <span class="cat-chip" data-q="apple iphone">&#127822; Apple</span>
+      <span class="cat-chip" data-q="samsung galaxy">&#128241; Samsung</span>
+      <span class="cat-chip" data-q="kopfhoerer">&#127911; Audio</span>
+      <span class="cat-chip" data-q="fernseher">&#128250; TV</span>
+      <span class="cat-chip" data-q="dyson">&#129529; Haushalt</span>
+      <span class="cat-chip" data-q="laufschuhe">&#128095; Fitness</span>
+      <span class="cat-chip" data-q="laptop">&#128187; PC</span>
+    </div>
+
+    <div class="error-msg" id="error-msg"></div>
+
+    <form id="signup-form">
+      <div class="form-group autocomplete-wrapper">
+        <label for="product">
+          Welches Produkt suchst du?
+          <span class="live-badge"><span class="live-dot"></span> Live</span>
+        </label>
+        <input type="text" id="product" placeholder="z.B. PlayStation 5, AirPods, Dyson..." autocomplete="off">
+        <div class="autocomplete-list" id="autocomplete-list">
+          <div class="loading-indicator" id="loading-indicator">
+            <span class="spinner"></span> Suche Produkte...
+          </div>
+        </div>
+
+        <!-- SELECTED PRODUCTS CHIPS -->
+        <div class="selected-products" id="selected-products"></div>
+        <div class="add-more-hint" id="add-more-hint">+ Tippe weiter, um weitere Produkte hinzuzuf&uuml;gen</div>
+
+        <!-- TRENDING -->
+        <div class="trending" id="trending-section">
+          <div class="trending-label">&#128293; Gerade beliebt</div>
+          <div class="trending-tags">
+            <span class="trending-tag" data-product="PlayStation 5 Pro">PS5 Pro</span>
+            <span class="trending-tag" data-product="Nintendo Switch 2">Switch 2</span>
+            <span class="trending-tag" data-product="Dyson Airwrap">Dyson Airwrap</span>
+            <span class="trending-tag" data-product="AirPods Pro 2">AirPods Pro</span>
+            <span class="trending-tag" data-product="Samsung Galaxy S26">Galaxy S26</span>
+            <span class="trending-tag" data-product="Roborock Saugroboter">Roborock</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMAIL (progressive - slides in after product selected) -->
+      <div class="email-step" id="email-step">
+        <div class="form-group">
+          <label for="email">Fast geschafft! Noch deine E-Mail:</label>
+          <input type="email" id="email" placeholder="name@beispiel.de" autocomplete="email">
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn" disabled>Deal-Alarm aktivieren</button>
+    </form>
+
+    <div class="success-msg" id="success-msg">
+      <div class="check-circle">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <h3>Du bist drin!</h3>
+      <p>Wir benachrichtigen dich per E-Mail, sobald es Deals gibt f&uuml;r:</p>
+      <div class="product-chips" id="success-products"></div>
+    </div>
+  </section>
+</main>
+
+<!-- MOBILE STICKY CTA -->
+<div class="sticky-cta hidden" id="sticky-cta">
+  <button onclick="document.getElementById('signup-section').scrollIntoView({behavior:'smooth'})">
+    Deal-Alarm einrichten
+  </button>
+</div>
+
+<footer class="footer">
+  &copy; 2026 Rabatto Mio &mdash; Alle Rechte vorbehalten.<br>
+  <small>* Affiliate-Links: Wenn du &uuml;ber unsere Links kaufst, erhalten wir eine kleine Provision &mdash; f&uuml;r dich &auml;ndert sich am Preis nichts.</small>
+</footer>
+
+<script>
+// ═══════════════════════════════════════
+// 1. SOCIAL PROOF COUNTER ANIMATION
+// ═══════════════════════════════════════
+const proofEl = document.getElementById('proof-count');
+const TARGET_COUNT = 2347;
+let count = 0;
+function animateCount() {
+  const step = Math.ceil(TARGET_COUNT / 60);
+  const interval = setInterval(() => {
+    count = Math.min(count + step, TARGET_COUNT);
+    proofEl.textContent = count.toLocaleString('de-DE');
+    if (count >= TARGET_COUNT) clearInterval(interval);
+  }, 25);
+}
+setTimeout(animateCount, 400);
+
+
+// ═══════════════════════════════════════
+// 2. SCROLL ANIMATIONS (IntersectionObserver)
+// ═══════════════════════════════════════
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.anim-section').forEach(el => observer.observe(el));
+
+
+// ═══════════════════════════════════════
+// 3. DARK / LIGHT THEME
+// ═══════════════════════════════════════
+const themeBtn = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+function setTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeIcon.innerHTML = dark ? '&#9728;' : '&#9790;';
+}
+// Auto-detect on load
+setTheme(prefersDark.matches);
+prefersDark.addEventListener('change', e => setTheme(e.matches));
+themeBtn.addEventListener('click', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  setTheme(!isDark);
+});
+
+
+// ═══════════════════════════════════════
+// 4. MULTI-PRODUCT SELECTION
+// ═══════════════════════════════════════
+const selectedProducts = [];
+const selectedContainer = document.getElementById('selected-products');
+const addMoreHint = document.getElementById('add-more-hint');
+const emailStep = document.getElementById('email-step');
+const submitBtn = document.getElementById('submit-btn');
+const productInput = document.getElementById('product');
+
+function addProduct(name) {
+  name = name.trim();
+  if (!name || selectedProducts.includes(name)) return;
+  selectedProducts.push(name);
+  renderSelectedProducts();
+  productInput.value = '';
+  productInput.focus();
+
+  // Show email step
+  emailStep.classList.add('visible');
+  addMoreHint.classList.add('visible');
+  updateSubmitState();
+}
+
+function removeProduct(name) {
+  const idx = selectedProducts.indexOf(name);
+  if (idx > -1) selectedProducts.splice(idx, 1);
+  renderSelectedProducts();
+  if (selectedProducts.length === 0) {
+    emailStep.classList.remove('visible');
+    addMoreHint.classList.remove('visible');
+  }
+  updateSubmitState();
+}
+
+function renderSelectedProducts() {
+  selectedContainer.innerHTML = selectedProducts.map(p =>
+    `<span class="selected-tag">${p}<button class="remove-tag" onclick="removeProduct('${p.replace(/'/g, "\\'")}')" aria-label="Entfernen">&times;</button></span>`
+  ).join('');
+}
+
+function updateSubmitState() {
+  const email = document.getElementById('email').value.trim();
+  submitBtn.disabled = selectedProducts.length === 0 || !email;
+}
+
+document.getElementById('email').addEventListener('input', updateSubmitState);
+
+
+// ═══════════════════════════════════════
+// 5. CATEGORY CHIPS
+// ═══════════════════════════════════════
+document.querySelectorAll('.cat-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    productInput.value = chip.dataset.q;
+    productInput.dispatchEvent(new Event('input'));
+    productInput.focus();
+  });
+});
+
+
+// ═══════════════════════════════════════
+// 6. TRENDING TAGS
+// ═══════════════════════════════════════
+document.querySelectorAll('.trending-tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    addProduct(tag.dataset.product);
+  });
+});
+
+
+// ═══════════════════════════════════════
+// 7. AUTOCOMPLETE WITH LIVE API
+// ═══════════════════════════════════════
+const listEl = document.getElementById('autocomplete-list');
+const loadingEl = document.getElementById('loading-indicator');
+const errorEl = document.getElementById('error-msg');
+
+let selectedIdx = -1;
+let debounceTimer = null;
+let currentQuery = '';
+let abortController = null;
+
+const searchIconSVG = `<svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
+
+function highlightMatch(text, query) {
+  if (!query) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return text.slice(0, idx) + '<span class="highlight">' + text.slice(idx, idx + query.length) + '</span>' + text.slice(idx + query.length);
+}
+
+async function fetchSuggestions(query) {
+  if (abortController) abortController.abort();
+  abortController = new AbortController();
+  try {
+    const res = await fetch(`/api/suggestions?q=${encodeURIComponent(query)}`, { signal: abortController.signal });
+    const data = await res.json();
+    return data.suggestions || [];
+  } catch (e) {
+    if (e.name === 'AbortError') return null;
+    return [];
+  }
+}
+
+function renderSuggestions(suggestions, query) {
+  listEl.querySelectorAll('.autocomplete-item').forEach(i => i.remove());
+  loadingEl.classList.remove('active');
+  selectedIdx = -1;
+  if (!suggestions || suggestions.length === 0) { listEl.classList.remove('active'); return; }
+  suggestions.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'autocomplete-item';
+    div.innerHTML = `${searchIconSVG}<span class="product-name">${highlightMatch(s.name, query)}</span>`;
+    div.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      addProduct(s.name);
+      listEl.classList.remove('active');
+    });
+    listEl.appendChild(div);
+  });
+  listEl.classList.add('active');
+}
+
+function showLoading() {
+  listEl.querySelectorAll('.autocomplete-item').forEach(i => i.remove());
+  loadingEl.classList.add('active');
+  listEl.classList.add('active');
+}
+
+productInput.addEventListener('input', (e) => {
+  const query = e.target.value.trim();
+  currentQuery = query;
+  if (debounceTimer) clearTimeout(debounceTimer);
+  if (query.length < 2) { listEl.classList.remove('active'); loadingEl.classList.remove('active'); return; }
+  showLoading();
+  debounceTimer = setTimeout(async () => {
+    const suggestions = await fetchSuggestions(query);
+    if (currentQuery === query && suggestions !== null) renderSuggestions(suggestions, query);
+  }, 250);
+});
+
+productInput.addEventListener('focus', (e) => {
+  if (e.target.value.trim().length >= 2) productInput.dispatchEvent(new Event('input'));
+});
+productInput.addEventListener('blur', () => setTimeout(() => listEl.classList.remove('active'), 200));
+
+productInput.addEventListener('keydown', (e) => {
+  const items = listEl.querySelectorAll('.autocomplete-item');
+  if (e.key === 'ArrowDown' && items.length) { e.preventDefault(); selectedIdx = Math.min(selectedIdx + 1, items.length - 1); }
+  else if (e.key === 'ArrowUp' && items.length) { e.preventDefault(); selectedIdx = Math.max(selectedIdx - 1, 0); }
+  else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (selectedIdx >= 0 && items[selectedIdx]) items[selectedIdx].dispatchEvent(new Event('mousedown'));
+    else if (productInput.value.trim().length >= 2) { addProduct(productInput.value); listEl.classList.remove('active'); }
+    return;
+  }
+  else if (e.key === 'Escape') { listEl.classList.remove('active'); return; }
+  items.forEach((it, i) => it.classList.toggle('selected', i === selectedIdx));
+  if (selectedIdx >= 0 && items[selectedIdx]) items[selectedIdx].scrollIntoView({ block: 'nearest' });
+});
+
+
+// ═══════════════════════════════════════
+// 8. CONFETTI
+// ═══════════════════════════════════════
+const confettiCanvas = document.getElementById('confetti-canvas');
+const ctx = confettiCanvas.getContext('2d');
+
+function launchConfetti() {
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+  const pieces = [];
+  const colors = ['#FFD700','#e8192c','#6b21a8','#059669','#FFA500','#FF69B4','#00CED1'];
+
+  for (let i = 0; i < 120; i++) {
+    pieces.push({
+      x: Math.random() * confettiCanvas.width,
+      y: -20 - Math.random() * 200,
+      w: 6 + Math.random() * 6,
+      h: 4 + Math.random() * 4,
+      vx: (Math.random() - 0.5) * 4,
+      vy: 2 + Math.random() * 4,
+      rot: Math.random() * Math.PI * 2,
+      rotV: (Math.random() - 0.5) * 0.15,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      opacity: 1
+    });
+  }
+
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    let alive = false;
+    pieces.forEach(p => {
+      p.x += p.vx;
+      p.vy += 0.06;
+      p.y += p.vy;
+      p.rot += p.rotV;
+      if (frame > 60) p.opacity = Math.max(0, p.opacity - 0.012);
+      if (p.opacity > 0 && p.y < confettiCanvas.height + 50) {
+        alive = true;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      }
+    });
+    frame++;
+    if (alive) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  }
+  draw();
+}
+
+
+// ═══════════════════════════════════════
+// 9. FORM SUBMISSION
+// ═══════════════════════════════════════
+document.getElementById('signup-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  errorEl.classList.remove('active');
+
+  const email = document.getElementById('email').value.trim();
+  if (!email || selectedProducts.length === 0) return;
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Wird aktiviert...';
+
+  try {
+    const res = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, product: selectedProducts.join(', ') })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Ein Fehler ist aufgetreten.');
+
+    // Show success
+    this.style.display = 'none';
+    const successProducts = document.getElementById('success-products');
+    successProducts.innerHTML = selectedProducts.map(p => `<span class="product-chip">${p}</span>`).join('');
+    document.getElementById('success-msg').classList.add('active');
+    launchConfetti();
+    document.getElementById('sticky-cta')?.classList.add('hidden');
+
+  } catch (err) {
+    errorEl.textContent = err.message;
+    errorEl.classList.add('active');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Deal-Alarm aktivieren';
+  }
+});
+
+
+// ═══════════════════════════════════════
+// 10. MOBILE STICKY CTA
+// ═══════════════════════════════════════
+if (window.innerWidth <= 600) {
+  const stickyEl = document.getElementById('sticky-cta');
+  const signupSection = document.getElementById('signup-section');
+
+  const stickyObserver = new IntersectionObserver(([entry]) => {
+    stickyEl.classList.toggle('hidden', entry.isIntersecting);
+  }, { threshold: 0.2 });
+  stickyObserver.observe(signupSection);
+}
+</script>
+
+</body>
+</html>
