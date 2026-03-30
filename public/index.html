@@ -430,6 +430,14 @@
   /* ── TRENDING TAGS ── */
   .trending {
     margin-top: 10px;
+    transition: opacity 0.15s, max-height 0.15s;
+  }
+  .trending.hidden, .add-more-hint.hidden {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    margin: 0;
+    pointer-events: none;
   }
   .trending-label {
     font-size: 0.75rem;
@@ -478,7 +486,7 @@
   .autocomplete-wrapper { position: relative; }
   .autocomplete-list {
     position: absolute;
-    top: 100%;
+    top: 68px;
     left: 0; right: 0;
     background: var(--dropdown-bg);
     border: 2px solid var(--purple);
@@ -1029,11 +1037,22 @@ async function fetchSuggestions(query) {
   }
 }
 
+const trendingEl = document.getElementById('trending-section');
+
+function hideExtras() {
+  trendingEl.classList.add('hidden');
+  addMoreHint.classList.add('hidden');
+}
+function showExtras() {
+  trendingEl.classList.remove('hidden');
+  if (selectedProducts.length > 0) addMoreHint.classList.remove('hidden');
+}
+
 function renderSuggestions(suggestions, query) {
   listEl.querySelectorAll('.autocomplete-item').forEach(i => i.remove());
   loadingEl.classList.remove('active');
   selectedIdx = -1;
-  if (!suggestions || suggestions.length === 0) { listEl.classList.remove('active'); return; }
+  if (!suggestions || suggestions.length === 0) { listEl.classList.remove('active'); showExtras(); return; }
   suggestions.forEach(s => {
     const div = document.createElement('div');
     div.className = 'autocomplete-item';
@@ -1046,6 +1065,7 @@ function renderSuggestions(suggestions, query) {
     listEl.appendChild(div);
   });
   listEl.classList.add('active');
+  hideExtras();
 }
 
 function showLoading() {
@@ -1058,7 +1078,7 @@ productInput.addEventListener('input', (e) => {
   const query = e.target.value.trim();
   currentQuery = query;
   if (debounceTimer) clearTimeout(debounceTimer);
-  if (query.length < 2) { listEl.classList.remove('active'); loadingEl.classList.remove('active'); return; }
+  if (query.length < 2) { listEl.classList.remove('active'); loadingEl.classList.remove('active'); showExtras(); return; }
   showLoading();
   debounceTimer = setTimeout(async () => {
     const suggestions = await fetchSuggestions(query);
@@ -1069,7 +1089,7 @@ productInput.addEventListener('input', (e) => {
 productInput.addEventListener('focus', (e) => {
   if (e.target.value.trim().length >= 2) productInput.dispatchEvent(new Event('input'));
 });
-productInput.addEventListener('blur', () => setTimeout(() => listEl.classList.remove('active'), 200));
+productInput.addEventListener('blur', () => setTimeout(() => { listEl.classList.remove('active'); showExtras(); }, 200));
 
 productInput.addEventListener('keydown', (e) => {
   const items = listEl.querySelectorAll('.autocomplete-item');
