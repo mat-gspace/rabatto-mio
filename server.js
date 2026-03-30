@@ -96,7 +96,7 @@ app.get('/api/search', (req, res) => {
 // GOOGLE SHEETS INTEGRATION
 // ─────────────────────────────────────────────
 const GOOGLE_SHEETS_URL = process.env.GOOGLE_SHEETS_URL
-  || 'https://script.google.com/macros/s/AKfycbxUvFRGamoLOeowdWM5NJWK6O1S8oPIwHSvjLEF6OtK6Jz_76dgH3RVPiK6pqoxfGJ0/exec';
+  || 'https://script.google.com/macros/s/AKfycbx9dXeYGK3FG6j-Q6g-kRFCuDCji4hIfEXFWR9qmeXkBjkP5rwm6BVnA_TmhrSmgJnj/exec';
 
 function saveToGoogleSheets(email, product) {
   const payload = JSON.stringify({ email, product });
