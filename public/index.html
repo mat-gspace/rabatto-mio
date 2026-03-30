@@ -650,11 +650,33 @@
     border-radius: 14px;
     padding: 14px;
     border: 1px solid var(--border);
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+  }
+  a.deal-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    cursor: pointer;
   }
   .deal-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    border-color: var(--accent);
+  }
+  .deal-link-hint {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .deal-card:hover .deal-link-hint {
+    opacity: 1;
+    transform: translateX(0);
   }
   .deal-emoji { font-size: 1.8rem; margin-bottom: 6px; }
   .deal-name {
@@ -899,42 +921,46 @@
   <section class="deals-section anim-section">
     <h2 data-i18n="dealsTitle">Deals, die wir gefunden haben</h2>
     <div class="deals-grid">
-      <div class="deal-card">
+      <a href="https://www.mediamarkt.de/de/content/themen-specials/aus-aktuellem-anlass/sony-ps-5-angebot-kurze-zeit" target="_blank" rel="noopener" class="deal-card deal-link">
         <div class="deal-emoji">&#127918;</div>
         <div class="deal-name">PlayStation 5 Slim</div>
         <div class="deal-prices">
           <span class="deal-old-price">549 &euro;</span>
-          <span class="deal-new-price">429 &euro;</span>
+          <span class="deal-new-price">384 &euro;</span>
         </div>
-        <span class="deal-badge" data-i18n="deal1badge">-22% gespart</span>
-      </div>
-      <div class="deal-card">
+        <span class="deal-badge" data-i18n="deal1badge">-30% bei MediaMarkt</span>
+        <span class="deal-link-hint" data-i18n="dealLink">Zum Deal &rarr;</span>
+      </a>
+      <a href="https://www.amazon.de/Apple-Kabellose-Ger%C3%A4uschunterdr%C3%BCckung-Personalisiertes-reduzieren/dp/B0CHWZ9TZS" target="_blank" rel="noopener" class="deal-card deal-link">
         <div class="deal-emoji">&#127911;</div>
         <div class="deal-name">AirPods Pro 2</div>
         <div class="deal-prices">
           <span class="deal-old-price">279 &euro;</span>
-          <span class="deal-new-price">199 &euro;</span>
+          <span class="deal-new-price">162 &euro;</span>
         </div>
-        <span class="deal-badge" data-i18n="deal2badge">-29% gespart</span>
-      </div>
-      <div class="deal-card">
+        <span class="deal-badge" data-i18n="deal2badge">-42% bei Amazon</span>
+        <span class="deal-link-hint" data-i18n="dealLink">Zum Deal &rarr;</span>
+      </a>
+      <a href="https://www.amazon.de/Dyson-V15-Detect-Absolute-Akkustaubsauger/dp/B0BS1Q7RG5" target="_blank" rel="noopener" class="deal-card deal-link">
         <div class="deal-emoji">&#129529;</div>
         <div class="deal-name">Dyson V15 Detect</div>
         <div class="deal-prices">
-          <span class="deal-old-price">699 &euro;</span>
-          <span class="deal-new-price">519 &euro;</span>
+          <span class="deal-old-price">789 &euro;</span>
+          <span class="deal-new-price">569 &euro;</span>
         </div>
-        <span class="deal-badge" data-i18n="deal3badge">-26% gespart</span>
-      </div>
-      <div class="deal-card">
+        <span class="deal-badge" data-i18n="deal3badge">-28% bei Amazon</span>
+        <span class="deal-link-hint" data-i18n="dealLink">Zum Deal &rarr;</span>
+      </a>
+      <a href="https://www.mediamarkt.de/de/product/_lg-oled65c43la-oled-tv-flat-65-zoll-165-cm-oled-4k-smart-tv-2948997.html" target="_blank" rel="noopener" class="deal-card deal-link">
         <div class="deal-emoji">&#128250;</div>
         <div class="deal-name">LG OLED C4 65"</div>
         <div class="deal-prices">
           <span class="deal-old-price">2.199 &euro;</span>
-          <span class="deal-new-price">1.599 &euro;</span>
+          <span class="deal-new-price">1.244 &euro;</span>
         </div>
-        <span class="deal-badge" data-i18n="deal4badge">-27% gespart</span>
-      </div>
+        <span class="deal-badge" data-i18n="deal4badge">-43% bei MediaMarkt</span>
+        <span class="deal-link-hint" data-i18n="dealLink">Zum Deal &rarr;</span>
+      </a>
     </div>
   </section>
 </main>
@@ -1323,7 +1349,8 @@ const translations = {
     step2: '<strong>E-Mail eintragen</strong> &mdash; Hinterlass deine E-Mail-Adresse, damit wir dich benachrichtigen k\u00f6nnen, sobald es ein Angebot gibt.',
     step3: '<strong>Besten Deal kassieren</strong> &mdash; Du bekommst eine E-Mail mit dem direkten Link zum g\u00fcnstigsten Angebot. Kaufe clever, spare Geld!',
     dealsTitle: 'Deals, die wir gefunden haben',
-    deal1badge: '-22% gespart', deal2badge: '-29% gespart', deal3badge: '-26% gespart', deal4badge: '-27% gespart',
+    deal1badge: '-30% bei MediaMarkt', deal2badge: '-42% bei Amazon', deal3badge: '-28% bei Amazon', deal4badge: '-43% bei MediaMarkt',
+    dealLink: 'Zum Deal &rarr;',
     formTitle: 'Jetzt Deal-Alarm einrichten',
     formSubtitle: 'Kostenlos. Kein Spam. Nur dein Wunsch-Deal.',
     freeBadge: '100% Kostenlos',
@@ -1352,7 +1379,8 @@ const translations = {
     step2: '<strong>Enter your email</strong> &mdash; Leave your email address so we can notify you as soon as a deal becomes available.',
     step3: '<strong>Grab the best deal</strong> &mdash; You\'ll receive an email with a direct link to the cheapest offer. Shop smart, save money!',
     dealsTitle: 'Deals we\'ve found',
-    deal1badge: '-22% saved', deal2badge: '-29% saved', deal3badge: '-26% saved', deal4badge: '-27% saved',
+    deal1badge: '-30% at MediaMarkt', deal2badge: '-42% at Amazon', deal3badge: '-28% at Amazon', deal4badge: '-43% at MediaMarkt',
+    dealLink: 'View deal &rarr;',
     formTitle: 'Set up your Deal Alert',
     formSubtitle: 'Free. No spam. Just your dream deal.',
     freeBadge: '100% Free',
