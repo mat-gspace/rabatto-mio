@@ -12,6 +12,23 @@
   gtag('js', new Date());
   gtag('config', 'AW-18053523410');
 </script>
+<!-- Event snippet for conversion tracking -->
+<script>
+function gtag_report_conversion(url) {
+  var callback = function () {
+    if (typeof(url) != 'undefined') {
+      window.location = url;
+    }
+  };
+  gtag('event', 'conversion', {
+      'send_to': 'AW-18053523410/Yvn7COv87JIcENLPy6BD',
+      'value': 1.0,
+      'currency': 'EUR',
+      'event_callback': callback
+  });
+  return false;
+}
+</script>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%</text></svg>">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter:wght@400;500;600;700;800&display=swap');
@@ -1019,7 +1036,7 @@ const dealsGrid = document.getElementById('deals-grid');
 const linkText = () => currentLang === 'en' ? 'View deal &rarr;' : 'Zum Deal &rarr;';
 
 function renderDealCard(deal) {
-  return `<a href="${deal.url}" target="_blank" rel="noopener" class="deal-card deal-link">
+  return `<a href="${deal.url}" target="_blank" rel="noopener" class="deal-card deal-link" onclick="gtag_report_conversion('${deal.url}'); return true;">
     <div class="deal-emoji">${deal.emoji}</div>
     <div class="deal-name">${deal.name}</div>
     <div class="deal-prices">
